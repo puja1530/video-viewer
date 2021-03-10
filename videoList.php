@@ -32,7 +32,7 @@ include("connection.php");
 </head>
 <!--Start of body tag-->
 <body>
-<h3 class="text-center text-light bg-info p-2"> Video List</h3> <!--Heading-->
+<?php include 'headerTemplate.php';?> <!-- Including header template -->
 <div class="container-fluid"> 
 <div class="row">
 
@@ -46,7 +46,7 @@ include("connection.php");
 	<!--Php code for retrieving sectionname from databse-->
 	<?php 
 
-		$sql="SELECT sectionname from tblsection";
+		$sql="SELECT * from tblsection";
 		$res=$connect->query($sql);
 		while ($row=$res->fetch_assoc()) { ?>
 
@@ -58,7 +58,7 @@ include("connection.php");
 			<li class="list-group-item">
 			<div class="form-check">
 				<label class="form-check-label">
-					<input id="section" type="checkbox" class="form-check-input video_check" value="<?php echo $row['sectionname']; ?>" > 
+					<input id="section" type="checkbox" class="form-check-input video_check" value="<?php echo $row['sectionid']; ?>" > 
 					<?php echo $row['sectionname']; ?>
 				</label>
 			</div>
@@ -81,7 +81,7 @@ include("connection.php");
 
 	<?php 
 
-		$sql="SELECT coursename from tblcourse";
+		$sql="SELECT * from tblcourse";
 		$res=$connect->query($sql);
 		while ($row=$res->fetch_assoc()) { ?>
 
@@ -93,7 +93,7 @@ include("connection.php");
 			<li class="list-group-item">
 			<div class="form-check">
 				<label class="form-check-label">
-					<input id="course" type="checkbox" class="form-check-input video_check" value="<?php echo $row['coursename']; ?>"> 
+					<input id="course" type="checkbox" class="form-check-input video_check" value="<?php echo $row['courseid']; ?>"> 
 					<?php echo $row['coursename']; ?>
 				</label>
 			</div>
@@ -115,8 +115,9 @@ include("connection.php");
 
 <!--Start of video list-->
 <div class="col-lg-9" >
-<h5 class="text-center" id="textChange">All Videos</h5> 
+<h5 class="text-center" id="textChange">All Videos</h5> <a class="btn btn-primary" href="index.php" role="button">Back to home</a> 
 <hr>
+
 <div class="text-center">
 <div class="row"  id="result">
 
@@ -154,10 +155,11 @@ include("connection.php");
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(".video_check").click(function(){  
+		$(".video_check").click(function(){ 
 			var action='data';
 			var section=get_filter_text('section');
 			var course=get_filter_text('course');
+            alert(section);
 			
 			$.ajax({
 				url:'filter.php',
