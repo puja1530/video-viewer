@@ -36,6 +36,7 @@ include("connection.php");
 				<img src="https://image.ibb.co/kUASdV/contact-image.png" alt="image"/>
 				<h2>Video Viewer</h2>
 				<h4>Watch your saved youtube videos here</h4>
+                <a class="btn btn-primary" href="videoList.php" role="button">Video List</a>
 			</div>
 		</div>
 		<div class="col-md-9">
@@ -43,8 +44,8 @@ include("connection.php");
 			
 			<div class="container mt-5 mb-5">
 			<label>Section</label>
-				<select name="section" class="form-control section selectFilter" id="sectionid">
-				<option value="-1">Select Section</option>
+				<select name="section" class="form-control section selectFilter" id="sectionid" required>
+				<option value="">Select Section</option>
 
 				<!--For calling the section name from the database and mapping it to the course drop-down -->
 				<?php 
@@ -64,7 +65,7 @@ include("connection.php");
 				<!--Course options will be called from the database depending on section value -->
 
 				<label>Course Id</label>
-				<select name="course"  class="form-control course selectFilter"  id="courseid">
+				<select name="course"  class="form-control course selectFilter"  id="courseid" >
 				<option value="">Select Course</option>
 					
 				</select>
@@ -77,7 +78,7 @@ include("connection.php");
 				<div class="form-group">
 				  <label class="control-label col-sm-2" for="comment">Video Link :</label>
 				  <div class="col-sm-10">
-					<textarea class="form-control" rows="5" name="link"></textarea>
+					<textarea class="form-control" rows="3" name="link"  required></textarea>
 				  </div>
 				</div>
 				<div class="form-group">        
@@ -97,25 +98,25 @@ include("connection.php");
 <!--Starting php tag for form submission -->
 <?php
 
-if(isset($_POST['btnsubmit']) && !empty($_POST['section']) &&  !empty($_POST['course'])) //Checking whether all the fields is selected or not
+if(isset($_POST['btnsubmit']) && isset($_POST['section']) && isset($_POST['course']))     //Checking whether all the fields is selected or not)
 {
-
+            
 			$section=$_POST['section'];
 			$course=$_POST['course'];
 			$link=$_POST['link'];
-			$link=preg_replace("#.*youtube\.com/watch\?v=#","",$link); //Extracting only the video id and replacing it with the link
+			$link=preg_replace("#.*youtube\.com/watch\?v=#","",$link);            //Extracting only the video id and replacing it with the link
 
 
-			$res=mysqli_query($connect,"INSERT INTO tblvideo (id,section,courseid,videoLink) values('','$section','$course','$link')"); //sql query for inserting the data into the databas
+			$res=mysqli_query($connect,"INSERT INTO tblvideo (id,section,courseid,videoLink) values('','$section','$course','$link')");   //Inserting into database
 
 
-			if($res){ //checking if inserted successfully or not
-				echo "<h5 alert alert-success>Inserted<h5>"; //showing the success message 
-				header('Location:videoList.php'); //Redirecting to another page
+			if($res){                                                                                   //checking if inserted successfully or not
+				echo "<h5 alert alert-success>Inserted<h5>";                                            //showing the success message 
+				header('Location:videoList.php');                                                        //Redirecting to another page
 			}
 			else
 			{
-				echo "Something went wrong .Try Again!"; // Showing data not inserted 
+				echo "Something went wrong .Try Again!";                                                    // Showing data not inserted 
 
 			}
 
@@ -123,7 +124,7 @@ if(isset($_POST['btnsubmit']) && !empty($_POST['section']) &&  !empty($_POST['co
 }
 else
 {
-	echo"<h5 class='alert alert-danger'>Please fill all the details </h5>"; //Displaying a message to select all the value
+	echo"<center><h5 class='alert alert-danger'>Please fill all the details </h5></center>";                                //Displaying a message to select all the value
 }
 
 
